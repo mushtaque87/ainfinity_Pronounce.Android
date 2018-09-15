@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".activities.MainActivity">
+    <item
+        android:id="@+id/nav_contents"
+        android:icon="@drawable/icon_content"
+        android:orderInCategory="100"
+        android:title="@string/nav_contents"
+        android:visible="true"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/nav_assignment"
+        android:icon="@drawable/icon_assignment"
+        android:orderInCategory="101"
+        android:title="@string/nav_assignment" />
+    <item
+        android:id="@+id/nav_settings"
+        android:icon="@drawable/settings"
+        android:orderInCategory="102"
+        android:title="@string/nav_settings" />
+</menu>
