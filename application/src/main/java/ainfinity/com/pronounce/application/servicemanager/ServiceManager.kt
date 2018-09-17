@@ -1,6 +1,8 @@
 package ainfinity.com.pronounce.application.servicemanager
 
 import ainfinity.com.pronounce.application.datamodels.UserManagement.*
+import ainfinity.com.pronounce.application.extensions.dateFromEpoc
+import ainfinity.com.pronounce.application.extensions.*
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.result.Result
 import com.google.gson.Gson
@@ -8,8 +10,11 @@ import ainfinity.com.pronounce.application.helpers.Constants
 import com.google.gson.GsonBuilder
 import org.json.JSONObject
 import java.nio.charset.Charset
+import com.google.gson.reflect.TypeToken
+import java.util.*
 
-class HTTPManager {
+
+class ServiceManager {
 
     companion object {
 
@@ -49,10 +54,11 @@ class HTTPManager {
                     }
         }
 
-        fun forgotPassword(email: String) {
+        fun forgotPassword(email: String,
+                           successCompletionHandler: (ForgotPasswordModel) -> Unit,
+                           failureCompletionHandler: (HTTPError?) -> Unit) {
             val json = JSONObject()
             json.put("email", email)
-
 
             Fuel.post(Constants.forgotpassword)
                     .header(mapOf("Content-Type" to "application/json"))
@@ -63,10 +69,12 @@ class HTTPManager {
                             is Result.Success -> {
                                 val data = result.get()
                                 val serverResponse = Gson().fromJson(data, ForgotPasswordModel::class.java)
-
+                                successCompletionHandler(serverResponse)
                             }
                             is Result.Failure -> {
                                 val ex = result.getException()
+                                val errorResponse = Gson().fromJson(response.data.toString(Charset.defaultCharset()),HTTPError::class.java)
+                                failureCompletionHandler(errorResponse)
                             }
                         }
                     }
@@ -75,7 +83,7 @@ class HTTPManager {
 
 
         fun getContentGroup(id: Int, uid: String, type: String,
-                            successCompletionHandler: (ContentGroup) -> Unit,
+                            successCompletionHandler: (Array<ContentGroup>) -> Unit,
                             failureCompletionHandler: (HTTPError) -> Unit) {
 
             var url: String?
@@ -92,7 +100,16 @@ class HTTPManager {
 
                             is Result.Success -> {
                                 val data = result.get()
-                                val serverResponse = Gson().fromJson(data, ContentGroup::class.java)
+//                                val collectionType = object : TypeToken<Collection<ContentGroup>>() {
+//
+//                                }.type
+
+
+                                //val serverResponse = Gson().fromJson<ContentGroup>(data,collectionType)
+                                val serverResponse = Gson().fromJson(data, Array<ContentGroup>::class.java)
+                                val date = Date().dateFromEpoc(serverResponse[0].creation_date)
+                                val datetime = date.toString()
+                                print("Response" + serverResponse)
                                 successCompletionHandler(serverResponse)
                             }
                             is Result.Failure -> {

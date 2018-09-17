@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment
 import ainfinity.com.pronounce.application.fragments.SettingsFragment
 
 import ainfinity.com.pronounce.application.R
+import ainfinity.com.pronounce.application.adapters.ContentType
 
 class TabBarActivity : AppCompatActivity() {
 
@@ -18,8 +19,9 @@ class TabBarActivity : AppCompatActivity() {
 
     lateinit var toolbar : ActionBar
      var contentFragment = ContentFragment()
-     var assignmentFragment = AssignmentFragment()
+     var assignmentFragment = ContentFragment()
      var settingsFragment = SettingsFragment()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +30,7 @@ class TabBarActivity : AppCompatActivity() {
         val bottomNavigation: BottomNavigationView = findViewById(R.id.main_nav)
         bottomNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
         if (savedInstanceState == null) {
+
             bottomNavigation.setSelectedItemId(R.id.nav_contents); // change to whichever id should be default
         }
         }
@@ -40,14 +43,14 @@ class TabBarActivity : AppCompatActivity() {
             R.id.nav_contents -> {
                 println("Contents Tab Clicked")
 
-
+                contentFragment.contentAdapter.contentType = ContentType.CONTENT
                 openFragment(contentFragment)
 
                 return@OnNavigationItemSelectedListener true
             }
             R.id.nav_assignment -> {
                 println("Assignments Tab Clicked")
-
+                assignmentFragment.contentAdapter.contentType = ContentType.ASSIGNMENT
                 openFragment(assignmentFragment)
                 return@OnNavigationItemSelectedListener true
             }

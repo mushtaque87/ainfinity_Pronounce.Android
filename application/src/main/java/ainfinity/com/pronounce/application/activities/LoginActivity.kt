@@ -3,15 +3,26 @@ package ainfinity.com.pronounce.application.activities
 import android.os.Bundle
 import android.app.Activity
 import ainfinity.com.pronounce.application.R
+import ainfinity.com.pronounce.application.helpers.AppSettings
 import android.app.ProgressDialog
 import android.content.Intent
 import android.support.v7.widget.AppCompatButton
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import ainfinity.com.pronounce.application.servicemanager.HTTPManager
+import ainfinity.com.pronounce.application.servicemanager.ServiceManager
+import android.graphics.Color
 import kotlinx.android.synthetic.main.activity_login.*
 import org.w3c.dom.Text
+import android.graphics.Color.parseColor
+
+import android.graphics.Color.DKGRAY
+import cc.cloudist.acplibrary.ACProgressConstant
+import cc.cloudist.acplibrary.ACProgressFlower
+
+
+
+
 
 class LoginActivity : Activity() {
     private val TAG = "LoginActivity"
@@ -32,15 +43,27 @@ class LoginActivity : Activity() {
                     onLoginFailed()
                     return
                 }
+
+                val progressDialog = ACProgressFlower.Builder(this)
+                        .direction(ACProgressConstant.DIRECT_CLOCKWISE)
+                        .themeColor(Color.WHITE)
+                        .text("Logging in. Please wait")
+                        .fadeColor(Color.DKGRAY)
+                        .isTextExpandWidth(true).build()
+                progressDialog.show()
+
                 // viewModel.doLogin(usernameTextEdit.text.toString(),passwordTextEdit.text.toString())
-               HTTPManager.doLogin(emailEditText.text.toString(),passwordEditText.text.toString(), {
+                ServiceManager.doLogin(emailEditText.text.toString(),passwordEditText.text.toString(), {
                     println("Login Success" + it.access_token)
+                    progressDialog.dismiss()
                     val intent = Intent(this, TabBarActivity::class.java)
                     startActivity(intent)
+
                 },{
                     println("Login Failed" + it?.description)
                     val intent = Intent(this, TabBarActivity::class.java)
                     startActivity(intent)
+                    progressDialog.dismiss()
                 })
 
             }
@@ -48,6 +71,8 @@ class LoginActivity : Activity() {
             R.id.btn_forgotpassword-> {
                 //HTTPManager.forgotPassword("demo@email.com")
                 println("ForgetPassword Clicked")
+                val intent = Intent(this, ForgotPasswordActivity::class.java)
+                startActivity(intent)
             }
             else -> { //your code
                 println("Button Unidentified")

@@ -74,14 +74,13 @@ class AppSettings private constructor() {
             }
         }
 
+        println("----------------------------");
+    }
 
     fun setSettings(key: String) {
 
     }
 
-
-        println("----------------------------");
-    }
 }
 
 

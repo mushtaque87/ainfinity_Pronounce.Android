@@ -27,6 +27,7 @@ class AssignmentFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
+        super.onCreate(savedInstanceState)
         return inflater.inflate(R.layout.fragment_assignment, container, false)
         //HTTPManager.getContentGroup(0,TokenManager.instance.usedid!!,"false")
     }

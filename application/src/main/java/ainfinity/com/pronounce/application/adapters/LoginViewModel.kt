@@ -1,6 +1,6 @@
 package ainfinity.com.pronounce.application.adapters
 
-import ainfinity.com.pronounce.application.servicemanager.HTTPManager
+import ainfinity.com.pronounce.application.servicemanager.ServiceManager
 
 class LoginViewModel {
 
@@ -8,7 +8,7 @@ class LoginViewModel {
     fun doLogin(username : String , password: String) {
 
         println("username $username password $password")
-        HTTPManager.doLogin(username,password, {
+        ServiceManager.doLogin(username,password, {
             println("Login Success")
         },{
             println("Login Failed")
