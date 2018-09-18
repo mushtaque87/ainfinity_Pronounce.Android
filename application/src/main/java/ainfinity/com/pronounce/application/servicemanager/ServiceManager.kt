@@ -7,6 +7,7 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.result.Result
 import com.google.gson.Gson
 import ainfinity.com.pronounce.application.helpers.Constants
+import ainfinity.com.pronounce.application.helpers.Helper
 import com.google.gson.GsonBuilder
 import org.json.JSONObject
 import java.nio.charset.Charset
@@ -39,6 +40,7 @@ class ServiceManager {
                             is Result.Success -> {
 
                                 val data = result.get()
+                                Helper.printLogs(data)
                                 val gson = GsonBuilder().create()
                                 val serverResponse = gson.fromJson(data, LoginResponseModel::class.java)
                                 TokenManager.instance.storeNewToken(serverResponse)
@@ -47,6 +49,7 @@ class ServiceManager {
                             }
                             is Result.Failure -> {
                                 val ex = result.getException()
+                                Helper.printLogs(ex.localizedMessage)
                                 val errorResponse = Gson().fromJson(response.data.toString(Charset.defaultCharset()),HTTPError::class.java)
                                 failureCompletionHandler(errorResponse)
                             }
@@ -107,8 +110,8 @@ class ServiceManager {
 
                                 //val serverResponse = Gson().fromJson<ContentGroup>(data,collectionType)
                                 val serverResponse = Gson().fromJson(data, Array<ContentGroup>::class.java)
-                                val date = Date().dateFromEpoc(serverResponse[0].creation_date)
-                                val datetime = date.toString()
+                               // val date = Date().dateFromEpoc(serverResponse[0].creation_date)
+                               // val datetime = date.toString()
                                 print("Response" + serverResponse)
                                 successCompletionHandler(serverResponse)
                             }

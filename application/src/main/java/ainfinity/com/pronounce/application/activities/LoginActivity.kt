@@ -54,8 +54,14 @@ class LoginActivity : Activity() {
 
                 // viewModel.doLogin(usernameTextEdit.text.toString(),passwordTextEdit.text.toString())
                 ServiceManager.doLogin(emailEditText.text.toString(),passwordEditText.text.toString(), {
+                    if(it != null){
+
+                    }
+
                     println("Login Success" + it.access_token)
                     progressDialog.dismiss()
+
+
                     val intent = Intent(this, TabBarActivity::class.java)
                     startActivity(intent)
 

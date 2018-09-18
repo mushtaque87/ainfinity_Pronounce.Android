@@ -19,6 +19,9 @@ import android.graphics.Color.parseColor
 import cc.cloudist.acplibrary.ACProgressConstant
 import cc.cloudist.acplibrary.ACProgressFlower
 import android.graphics.Color
+import android.support.v7.widget.DividerItemDecoration
+
+
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -53,11 +56,11 @@ class ContentFragment  : Fragment() ,   ContentActivityDelegates {
 
     override fun onStart() {
         super.onStart()
+        fetchContentGroup()
 
     }
 
     override fun onResume() {
-        fetchContentGroup()
         super.onResume()
     }
 
@@ -67,15 +70,16 @@ class ContentFragment  : Fragment() ,   ContentActivityDelegates {
         super.onActivityCreated(savedInstanceState)
 
         content_recyclerView.layoutManager = LinearLayoutManager(this.context)
+        content_recyclerView.addItemDecoration(DividerItemDecoration(content_recyclerView.getContext(), DividerItemDecoration.VERTICAL))
         content_recyclerView.adapter  = contentAdapter
     }
 
     override fun fetchContentGroup(id : Int) : Unit {
 
-        val progressDialog = ACProgressFlower.Builder(AppSettings.instance.context)
+        val progressDialog = ACProgressFlower.Builder(activity)
                 .direction(ACProgressConstant.DIRECT_CLOCKWISE)
                 .themeColor(Color.WHITE)
-                .text("Logging in. Please wait")
+                .text("Fetching Contents. Please wait")
                 .fadeColor(Color.DKGRAY)
                 .isTextExpandWidth(true).build()
         progressDialog.show()

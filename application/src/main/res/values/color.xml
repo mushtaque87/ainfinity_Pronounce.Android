@@ -4,4 +4,5 @@
     <color name="navBarBackgroudColor">#EFEFF4</color>
     <color name="navBarItemColor">#75777a</color>
     <color name="grey">#2F2C2C</color>
+    <color name="transparent">#00000000</color>
 </resources>
