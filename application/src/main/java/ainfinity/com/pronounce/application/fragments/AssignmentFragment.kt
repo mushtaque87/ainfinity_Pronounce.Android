@@ -39,5 +39,16 @@ class AssignmentFragment : Fragment() {
         assignment_RecyclerView.adapter  = ContentViewAdapter()
     }
 
+    override fun onStart() {
+        super.onStart()
+        //fetchContentGroup()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
+
+
 
 }

@@ -4,6 +4,10 @@ import android.content.Context
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.util.*
+import java.io.*
+import java.nio.file.Files.exists
+
+
 
 
 class AppSettings private constructor() {
@@ -25,9 +29,21 @@ class AppSettings private constructor() {
     var graphType : Int? = 0
     var context:Context? = null
 
-    fun copyFileToInternalStorage(context: Context, fileName: String) {
+    fun updateFileInInternalStorage(context: Context, fileName: String) {
         // val context = super.getApplicationContext()
-        copyFile(context, fileName)
+
+        val internalFilePath = getAppDataDirectory(context) + "/${fileName}"
+        val file =  File(internalFilePath);
+        if(file.exists()) {
+
+        } else
+        {
+            copyFileToInternalStorage(context, internalFilePath)
+        }
+
+
+
+
 
     }
 
@@ -35,12 +51,12 @@ class AppSettings private constructor() {
     return context.getFilesDir().getPath().toString()
     }
 
-    private fun copyFile(context: Context, fileName: String) {
+    private fun copyFileToInternalStorage(context: Context, filePath: String) {
         val assetManager = context.assets
-        val internalPath = getAppDataDirectory(context) + "/${fileName}"
+
         try {
-            val instream = assetManager.open(fileName)
-            val out = FileOutputStream(internalPath)
+            val instream = assetManager.open(filePath)
+            val out = FileOutputStream(filePath)
             val buffer = ByteArray(1024)
             var read = instream.read(buffer)
             while (read != -1) {
@@ -77,7 +93,24 @@ class AppSettings private constructor() {
         println("----------------------------");
     }
 
-    fun setSettings(key: String) {
+    fun setValue(context: Context,fileName: String, key:String , value:Any) : Unit {
+
+        val properties = Properties()
+       /* when(key){
+
+            "isLoggedIn" ->
+                properties.put(key, value.toString().toBoolean())
+
+            "isFirstlogin" ->
+                properties.put(key, value.toString().toBoolean())
+        }*/
+        properties.put(key, value.toString())
+
+        val propertiesFilePath = getAppDataDirectory(context) + "/${fileName}"
+
+        val fileOutputStream = FileOutputStream(propertiesFilePath)
+        properties.store(fileOutputStream, "Save to properties file")
+
 
     }
 

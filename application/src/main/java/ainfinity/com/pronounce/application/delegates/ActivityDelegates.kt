@@ -1,7 +1,17 @@
 package ainfinity.com.pronounce.application.delegates
 
+import ainfinity.com.pronounce.application.adapters.CrumActionType
+import ainfinity.com.pronounce.application.datamodels.UserManagement.ContentGroup
+
 interface ContentActivityDelegates {
 
-    fun fetchContentGroup(id : Int = 0) : Unit
+    fun  fetchContentGroup(content: ContentGroup, actionType:CrumActionType)  : Unit
+
+}
+
+
+interface SettingActivityDelegates {
+
+    fun logOut() : Unit
 
 }

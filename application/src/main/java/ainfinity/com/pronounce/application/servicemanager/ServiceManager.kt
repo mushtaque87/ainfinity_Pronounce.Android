@@ -51,7 +51,12 @@ class ServiceManager {
                                 val ex = result.getException()
                                 Helper.printLogs(ex.localizedMessage)
                                 val errorResponse = Gson().fromJson(response.data.toString(Charset.defaultCharset()),HTTPError::class.java)
-                                failureCompletionHandler(errorResponse)
+                                if(errorResponse != null) {
+                                    failureCompletionHandler(errorResponse)
+                                } else {
+                                    val httperror = HTTPError(description = "Server error. Please try again.", error_code = "500")
+                                    failureCompletionHandler(httperror)
+                                }
                             }
                         }
                     }
@@ -77,7 +82,12 @@ class ServiceManager {
                             is Result.Failure -> {
                                 val ex = result.getException()
                                 val errorResponse = Gson().fromJson(response.data.toString(Charset.defaultCharset()),HTTPError::class.java)
-                                failureCompletionHandler(errorResponse)
+                                if(errorResponse != null) {
+                                    failureCompletionHandler(errorResponse)
+                                } else {
+                                    val httperror = HTTPError(description = "Server error. Please try again.", error_code = "500")
+                                    failureCompletionHandler(httperror)
+                                }
                             }
                         }
                     }
@@ -103,11 +113,7 @@ class ServiceManager {
 
                             is Result.Success -> {
                                 val data = result.get()
-//                                val collectionType = object : TypeToken<Collection<ContentGroup>>() {
 //
-//                                }.type
-
-
                                 //val serverResponse = Gson().fromJson<ContentGroup>(data,collectionType)
                                 val serverResponse = Gson().fromJson(data, Array<ContentGroup>::class.java)
                                // val date = Date().dateFromEpoc(serverResponse[0].creation_date)
@@ -118,7 +124,12 @@ class ServiceManager {
                             is Result.Failure -> {
                                 val ex = result.getException()
                                 val errorResponse = Gson().fromJson(response.data.toString(Charset.defaultCharset()),HTTPError::class.java)
-                                failureCompletionHandler(errorResponse)
+                                if(errorResponse != null) {
+                                    failureCompletionHandler(errorResponse)
+                                } else {
+                                    val httperror = HTTPError(description = "Server error. Please try again.", error_code = "500")
+                                    failureCompletionHandler(httperror)
+                                }
                             }
                         }
 

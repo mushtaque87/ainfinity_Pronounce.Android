@@ -1,0 +1,24 @@
+[{
+        "id": 5,
+        "name": "chapters",
+        "has_units": true,
+        "creation_date": 334753847382,
+        "created_by": "23482374-userID-23423234",
+        "parent_id": null,
+        "description": "Content 5"
+ 
+ 
+    },
+    {
+        "id": 6,
+        "name": "chapters",
+        "has_units": false,
+        "creation_date": 334753847382,
+        "created_by": "23482374-userID-23423234",
+        "parent_id": 4,
+        "description": "Content 6"
+ 
+ 
+    }
+ 
+]

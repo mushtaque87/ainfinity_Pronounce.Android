@@ -13,9 +13,15 @@ import ainfinity.com.pronounce.application.helpers.Helper
 import kotlinx.android.synthetic.main.contentlist_item.view.*
 import java.util.*
 
+
 enum class  ContentType {
     CONTENT , ASSIGNMENT
 }
+
+enum class  CrumActionType {
+    APPEND , REMOVE
+}
+
 
 class ContentViewAdapter: RecyclerView.Adapter<ContentViewHolder>() {
      var contentList = ArrayList<ContentGroup>()
@@ -33,7 +39,7 @@ class ContentViewAdapter: RecyclerView.Adapter<ContentViewHolder>() {
          holder.view.createdDateTextView.text = Date().dateFromEpoc(content.creation_date).toText("EEE, d MMM, yyyy")
         //holder.view.submissionDateTextView.text = content.
         holder.view.descriptionTextView.text = content.description
-        holder.view.setOnClickListener { getContent(content.id) }
+        holder.view.setOnClickListener { getContent(content) }
         if (contentType.equals(ContentType.CONTENT)){
             holder.view.submissionDateTextView.visibility = View.INVISIBLE
         }
@@ -54,8 +60,8 @@ class ContentViewAdapter: RecyclerView.Adapter<ContentViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun getContent(id: Int){
-        delegate?.fetchContentGroup(id)
+    fun getContent(content: ContentGroup){
+        delegate?.fetchContentGroup(content,CrumActionType.APPEND)
     }
 
 }
@@ -69,8 +75,6 @@ class ContentViewHolder(val view:View): RecyclerView.ViewHolder(view) , View.OnC
     //4
     override fun onClick(v: View) {
         Helper.printLogs("Row Clicked")
-
-
     }
 
 }

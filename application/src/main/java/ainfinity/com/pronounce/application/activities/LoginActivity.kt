@@ -29,6 +29,9 @@ class LoginActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //setContentView(R.layout.activity_tab_bar)
+
+
         setContentView(R.layout.activity_login)
         btn_login.setOnClickListener { onClick(btn_login) }
         btn_forgotpassword.setOnClickListener { onClick(btn_forgotpassword) }
@@ -39,6 +42,23 @@ class LoginActivity : Activity() {
         when (v?.id) {
             R.id.btn_login -> {
                 println("Login Clicked")
+
+               // AppSettings.instance.isFirstlogin = false
+               // AppSettings.instance.isLoggedIn == true
+
+
+
+//                val mainIntent = Intent(applicationContext, MainActivity::class.java)
+//                mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Will clear out your activity history stack till now
+//                startActivity(mainIntent)
+//                setResult(RESULT_OK,mainIntent)
+//                finish()
+
+
+
+
+
+
                 if (!validate()) {
                     onLoginFailed()
                     return
@@ -46,30 +66,33 @@ class LoginActivity : Activity() {
 
                 val progressDialog = ACProgressFlower.Builder(this)
                         .direction(ACProgressConstant.DIRECT_CLOCKWISE)
-                        .themeColor(Color.WHITE)
+                        .themeColor(Color.BLACK)
+                        .bgColor(Color.WHITE)
                         .text("Logging in. Please wait")
-                        .fadeColor(Color.DKGRAY)
+                        .textSize(40)
+                        .textColor(Color.BLACK)
+                        .textAlpha(1f)
+                        .fadeColor(Color.GRAY)
                         .isTextExpandWidth(true).build()
                 progressDialog.show()
 
                 // viewModel.doLogin(usernameTextEdit.text.toString(),passwordTextEdit.text.toString())
                 ServiceManager.doLogin(emailEditText.text.toString(),passwordEditText.text.toString(), {
-                    if(it != null){
-
-                    }
 
                     println("Login Success" + it.access_token)
                     progressDialog.dismiss()
 
+                    AppSettings.instance.setValue(applicationContext,"settings.properties","isLoggedIn",true)
+                    AppSettings.instance.setValue(applicationContext,"settings.properties","isFirstlogin",false)
 
                     val intent = Intent(this, TabBarActivity::class.java)
                     startActivity(intent)
 
                 },{
                     println("Login Failed" + it?.description)
-                    val intent = Intent(this, TabBarActivity::class.java)
-                    startActivity(intent)
                     progressDialog.dismiss()
+
+
                 })
 
             }

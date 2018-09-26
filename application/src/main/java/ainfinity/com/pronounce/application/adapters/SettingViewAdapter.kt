@@ -6,12 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import ainfinity.com.pronounce.application.R
+import ainfinity.com.pronounce.application.delegates.SettingActivityDelegates
 import kotlinx.android.synthetic.main.logout_item.view.*
 import kotlinx.android.synthetic.main.settinglist_item.view.*
 
 
 
 
+
+enum class  SettingType {
+    ACCOUNT ,
+    LANGUAGE ,
+    THEME,
+    GRAPHTYPE,
+    LOGOUT
+}
 
 
 class SettingsViewAdapter: RecyclerView.Adapter<SettingsViewHolder>() {
@@ -23,7 +32,15 @@ class SettingsViewAdapter: RecyclerView.Adapter<SettingsViewHolder>() {
         const val GRAPHTYPE = 3
         const val LOGOUT = 4
     }
+
+    val settingType : SettingType? = null
     val settingTypes = arrayListOf<String>("Accounts","Language","Theme","Graph Type","Logout")
+    var delegate : SettingActivityDelegates? = null
+
+    public fun SettingsViewAdapter(delegate: SettingActivityDelegates){
+        this.delegate =  delegate
+    }
+
 
     override fun onBindViewHolder(holder: SettingsViewHolder, position: Int) {
        when (position) {
@@ -32,8 +49,11 @@ class SettingsViewAdapter: RecyclerView.Adapter<SettingsViewHolder>() {
             }
             else -> {
                 holder.view.logoutTextView.text =  "Logout"
+                holder.view.setOnClickListener { delegate?.logOut() }
+
             }
         }
+        //holder.view.setOnClickListener {  }
     }
 
     fun SettingsViewHolder(view: View,onItemSelectedListener: AdapterView.OnItemSelectedListener) {
@@ -45,13 +65,15 @@ class SettingsViewAdapter: RecyclerView.Adapter<SettingsViewHolder>() {
         val layoutInflater = LayoutInflater.from(parent?.context)
         var cell : View
 
-        when (viewType) {
+            when (viewType) {
             ACCOUNT,LANGUAGE,THEME,GRAPHTYPE -> {
                  val cell = layoutInflater.inflate(R.layout.settinglist_item, parent, false)
+                cell.minimumHeight = 80
                  return  SettingsViewHolder(cell)
              }
             else -> {
                 val cell = layoutInflater.inflate(R.layout.logout_item, parent, false)
+                cell.minimumHeight = 100
                 return  SettingsViewHolder(cell)
             }
             //val cell = layoutInflater.inflate(R.layout.settinglist_item, parent, false)
